@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 
 import api from "../services/api";
 import Layout from "../components/Layout";
+import Pagination from "../components/Pagination";
+import usePagination from "../hooks/usePagination";
 
 
 function TypesConges() {
@@ -26,6 +28,8 @@ function TypesConges() {
         nombre_jours_max: 10,
         actif: true
     });
+
+    const paginationTypes = usePagination(typesConges);
 
 
     // ==========================================
@@ -609,10 +613,6 @@ function TypesConges() {
 
                         <div className="text-center p-5">
 
-                            <div className="fs-1 mb-3">
-                                🏷️
-                            </div>
-
                             <h5>
                                 Aucun type de congé
                             </h5>
@@ -649,7 +649,7 @@ function TypesConges() {
 
                                 <tbody>
 
-                                    {typesConges.map(type => (
+                                    {paginationTypes.pageItems.map(type => (
 
                                         <tr key={type.id}>
 
@@ -719,7 +719,7 @@ function TypesConges() {
                                                         handleEdit(type)
                                                     }
                                                 >
-                                                    ✏️ Modifier
+                                                    Modifier
                                                 </button>
 
 
@@ -746,7 +746,7 @@ function TypesConges() {
                                                         handleDelete(type.id)
                                                     }
                                                 >
-                                                    🗑️ Supprimer
+                                                    Supprimer
                                                 </button>
 
                                             </td>
@@ -764,6 +764,14 @@ function TypesConges() {
                     )}
 
                 </div>
+
+                <Pagination
+                    currentPage={paginationTypes.currentPage}
+                    onPageChange={paginationTypes.setPage}
+                    pageSize={paginationTypes.pageSize}
+                    totalItems={paginationTypes.totalItems}
+                    totalPages={paginationTypes.totalPages}
+                />
 
             </div>
 

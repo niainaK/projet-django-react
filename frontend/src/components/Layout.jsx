@@ -1,130 +1,84 @@
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+
+const menuItems = [
+    { label: "Tableau de bord", path: "/dashboard", icon: "" },
+    { label: "Employés", path: "/employes", icon: "" },
+    { label: "Demandes", path: "/demandes", icon: "" },
+    { label: "Jours fériés", path: "/jours-feries", icon: "" },
+    { label: "Types de congés", path: "/types-conges", icon: "" },
+    { label: "Soldes", path: "/soldes", icon: "" },
+];
 
 function Layout({ children }) {
-
     const navigate = useNavigate();
+    const location = useLocation();
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
     const handleLogout = () => {
         localStorage.removeItem("access");
         localStorage.removeItem("refresh");
-
+        setMobileMenuOpen(false);
         navigate("/");
     };
 
+    const handleNavigate = (path) => {
+        navigate(path);
+        setMobileMenuOpen(false);
+    };
+
+    const activeTitle =
+        menuItems.find((item) => item.path === location.pathname)?.label || "Tableau de bord";
+
     return (
-        <div className="d-flex min-vh-100 bg-light">
-
-            {/* SIDEBAR */}
-            <aside
-                className="bg-dark text-white p-3"
-                style={{ width: "250px" }}
-            >
-
-                <h4 className="text-center mb-4">
-                    Gestion Congés
-                </h4>
-
-                <hr />
-
-                <ul className="nav nav-pills flex-column gap-2">
-
-                    <li className="nav-item">
-                        <button
-                            className="nav-link active w-100 text-start"
-                            onClick={() => navigate("/dashboard")}
-                        >
-                            🏠 Dashboard
-                        </button>
-                    </li>
-
-                    <li className="nav-item">
-                        <button
-                            className="nav-link text-white w-100 text-start"
-                            onClick={() => navigate("/employes")}
-                        >
-                            👥 Employés
-                        </button>
-                    </li>
-
-                    <li className="nav-item">
-                        <button
-                            className="nav-link text-white w-100 text-start"
-                            onClick={() => navigate("/demandes")}
-                        >
-                            📋 Demandes
-                        </button>
-                    </li>
-
-                    <li className="nav-item">
-                        <button
-                            className="nav-link text-white w-100 text-start"
-                            onClick={() => navigate("/jours-feries")}
-                        >
-                            📅 Jours fériés
-                        </button>
-                    </li>
-
-                    <li className="nav-item">
-                        <button
-                            className="nav-link text-white w-100 text-start"
-                            onClick={() => navigate("/types-conges")}
-                        >
-                            🏷️ Types de congés
-                        </button>
-                    </li>
-                    <li className="nav-item">
-                        <button
-                            className="nav-link text-white w-100 text-start"
-                            onClick={() => navigate("/soldes")}
-                        >
-                            📊 Soldes de congés
-                        </button>
-                    </li>
-
-                </ul>
-
-                <div className="mt-auto pt-5">
-
-                    <hr />
-
-                    <button
-                        className="btn btn-danger w-100"
-                        onClick={handleLogout}
-                    >
-                        🚪 Déconnexion
-                    </button>
-
+        <div className="app-shell">
+            <aside className={`sidebar ${mobileMenuOpen ? "open" : ""}`}>
+                <div className="brand-block">
+                    <div className="brand-mark">D</div>
+                    <div className="brand-text">
+                        <span className="brand-name">Drivery</span>
+                        <small>Gestion congés</small>
+                    </div>
                 </div>
 
-            </aside>
-
-
-            {/* CONTENU PRINCIPAL */}
-            <div className="flex-grow-1">
-
-                {/* NAVBAR */}
-                <nav className="navbar navbar-light bg-white shadow-sm px-4">
-
-                    <span className="navbar-brand mb-0 h5">
-                        Tableau de bord
-                    </span>
-
-                    <span className="text-muted">
-                        Administration
-                    </span>
-
+                <nav className="sidebar-nav" aria-label="Menu principal">
+                    {menuItems.map((item) => (
+                        <button
+                            key={item.path}
+                            type="button"
+                            className={`nav-button ${location.pathname === item.path ? "active" : ""}`}
+                            onClick={() => handleNavigate(item.path)}
+                        >
+                            <span className="nav-icon">{item.icon}</span>
+                            <span>{item.label}</span>
+                        </button>
+                    ))}
                 </nav>
 
+                <div className="sidebar-footer">
+                    <button type="button" className="logout-button" onClick={handleLogout}>
+                        Déconnexion
+                    </button>
+                </div>
+            </aside>
 
-                {/* PAGE */}
-                <main className="p-4">
+            <div className="content-shell">
+                <header className="topbar">
+                    <button
+                        type="button"
+                        className="mobile-menu-button"
+                        aria-label="Ouvrir le menu"
+                        onClick={() => setMobileMenuOpen((prev) => !prev)}
+                    >
+                        <span className="menu-glyph" aria-hidden="true" />
+                    </button>
 
-                    {children}
+                    <div className="topbar-title">{activeTitle}</div>
+                    <div className="topbar-meta">Administration</div>
+                </header>
 
-                </main>
-
+                <main className="page-main">{children}</main>
             </div>
-
         </div>
     );
 }

@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 
 import api from "../services/api";
 import Layout from "../components/Layout";
+import Pagination from "../components/Pagination";
+import usePagination from "../hooks/usePagination";
 
 
 function JoursFeries() {
@@ -25,6 +27,8 @@ function JoursFeries() {
         nom: "",
         date: ""
     });
+
+    const paginationJours = usePagination(joursFeries);
 
 
     // ==========================================
@@ -560,10 +564,6 @@ function JoursFeries() {
 
                         <div className="text-center p-5">
 
-                            <div className="fs-1 mb-3">
-                                📅
-                            </div>
-
                             <h5>
                                 Aucun jour férié
                             </h5>
@@ -610,7 +610,7 @@ function JoursFeries() {
 
                                 <tbody>
 
-                                    {joursFeries.map(jour => (
+                                    {paginationJours.pageItems.map(jour => (
 
                                         <tr key={jour.id}>
 
@@ -636,8 +636,6 @@ function JoursFeries() {
 
                                                 <span className="badge bg-info text-dark">
 
-                                                    📅{" "}
-
                                                     {formaterDate(
                                                         jour.date
                                                     )}
@@ -655,7 +653,7 @@ function JoursFeries() {
                                                         handleEdit(jour)
                                                     }
                                                 >
-                                                    ✏️ Modifier
+                                                    Modifier
                                                 </button>
 
 
@@ -667,7 +665,7 @@ function JoursFeries() {
                                                         )
                                                     }
                                                 >
-                                                    🗑️ Supprimer
+                                                    Supprimer
                                                 </button>
 
                                             </td>
@@ -686,6 +684,14 @@ function JoursFeries() {
 
                 </div>
 
+                <Pagination
+                    currentPage={paginationJours.currentPage}
+                    onPageChange={paginationJours.setPage}
+                    pageSize={paginationJours.pageSize}
+                    totalItems={paginationJours.totalItems}
+                    totalPages={paginationJours.totalPages}
+                />
+
             </div>
 
         </Layout>
@@ -696,4 +702,3 @@ function JoursFeries() {
 
 
 export default JoursFeries;
-

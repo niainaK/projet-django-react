@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 
 import api from "../services/api";
 import Layout from "../components/Layout";
+import Pagination from "../components/Pagination";
+import usePagination from "../hooks/usePagination";
 
 
 function Soldes() {
@@ -16,6 +18,8 @@ function Soldes() {
 
     const [message, setMessage] = useState("");
     const [error, setError] = useState("");
+
+    const paginationSoldes = usePagination(soldes);
 
 
     // =========================
@@ -178,7 +182,7 @@ function Soldes() {
                     className="btn btn-primary"
                     onClick={actualiser}
                 >
-                    🔄 Actualiser
+                    Actualiser
                 </button>
 
             </div>
@@ -254,10 +258,6 @@ function Soldes() {
 
                                 </div>
 
-                                <div className="fs-1">
-                                    📊
-                                </div>
-
                             </div>
 
                         </div>
@@ -294,10 +294,6 @@ function Soldes() {
 
                                 </div>
 
-                                <div className="fs-1">
-                                    ➕
-                                </div>
-
                             </div>
 
                         </div>
@@ -332,10 +328,6 @@ function Soldes() {
 
                                     </h3>
 
-                                </div>
-
-                                <div className="fs-1">
-                                    ✅
                                 </div>
 
                             </div>
@@ -378,10 +370,6 @@ function Soldes() {
 
                         <div className="text-center p-5">
 
-                            <div className="fs-1 mb-3">
-                                📊
-                            </div>
-
                             <h5>
                                 Aucun solde de congé
                             </h5>
@@ -423,7 +411,7 @@ function Soldes() {
 
                                 <tbody>
 
-                                    {soldes.map(solde => {
+                                    {paginationSoldes.pageItems.map(solde => {
 
                                         const pourcentage =
                                             calculerPourcentage(solde);
@@ -543,6 +531,14 @@ function Soldes() {
 
                 </div>
 
+                <Pagination
+                    currentPage={paginationSoldes.currentPage}
+                    onPageChange={paginationSoldes.setPage}
+                    pageSize={paginationSoldes.pageSize}
+                    totalItems={paginationSoldes.totalItems}
+                    totalPages={paginationSoldes.totalPages}
+                />
+
             </div>
 
         </Layout>
@@ -553,4 +549,3 @@ function Soldes() {
 
 
 export default Soldes;
-

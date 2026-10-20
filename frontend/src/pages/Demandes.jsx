@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 
 import api from "../services/api";
 import Layout from "../components/Layout";
+import Pagination from "../components/Pagination";
+import usePagination from "../hooks/usePagination";
 
 
 function Demandes() {
@@ -399,7 +401,7 @@ function Demandes() {
 
                 return (
                     <span className="badge bg-warning text-dark">
-                        ⏳ En attente
+                        En attente
                     </span>
                 );
 
@@ -408,7 +410,7 @@ function Demandes() {
 
                 return (
                     <span className="badge bg-success">
-                        ✓ Approuvée
+                        Approuvée
                     </span>
                 );
 
@@ -417,7 +419,7 @@ function Demandes() {
 
                 return (
                     <span className="badge bg-danger">
-                        ✕ Refusée
+                        Refusée
                     </span>
                 );
 
@@ -481,6 +483,8 @@ function Demandes() {
 
         }
     );
+
+    const paginationDemandes = usePagination(demandesFiltrees);
 
 
     // =========================
@@ -951,11 +955,12 @@ function Demandes() {
                                 className="form-control"
                                 placeholder="Rechercher par employé, type ou motif..."
                                 value={recherche}
-                                onChange={(e) =>
+                                onChange={(e) => {
+                                    paginationDemandes.setPage(1);
                                     setRecherche(
                                         e.target.value
-                                    )
-                                }
+                                    );
+                                }}
                             />
 
                         </div>
@@ -970,11 +975,12 @@ function Demandes() {
                             <select
                                 className="form-select"
                                 value={filtreStatut}
-                                onChange={(e) =>
+                                onChange={(e) => {
+                                    paginationDemandes.setPage(1);
                                     setFiltreStatut(
                                         e.target.value
-                                    )
-                                }
+                                    );
+                                }}
                             >
 
                                 <option value="tous">
@@ -1034,10 +1040,6 @@ function Demandes() {
 
                         <div className="text-center p-5">
 
-                            <div className="fs-1 mb-3">
-                                📋
-                            </div>
-
                             <h5>
                                 Aucune demande trouvée
                             </h5>
@@ -1084,7 +1086,7 @@ function Demandes() {
 
                                 <tbody>
 
-                                    {demandesFiltrees.map(
+                                    {paginationDemandes.pageItems.map(
                                         demande => (
 
                                             <tr key={demande.id}>
@@ -1199,7 +1201,7 @@ function Demandes() {
                                                                 {processingId ===
                                                                 demande.id
                                                                     ? "..."
-                                                                    : "✓ Approuver"}
+                                                                    : "Approuver"}
 
                                                             </button>
 
@@ -1220,7 +1222,7 @@ function Demandes() {
                                                                 {processingId ===
                                                                 demande.id
                                                                     ? "..."
-                                                                    : "✕ Refuser"}
+                                                                    : "Refuser"}
 
                                                             </button>
 
@@ -1256,6 +1258,14 @@ function Demandes() {
 
                 </div>
 
+                <Pagination
+                    currentPage={paginationDemandes.currentPage}
+                    onPageChange={paginationDemandes.setPage}
+                    pageSize={paginationDemandes.pageSize}
+                    totalItems={paginationDemandes.totalItems}
+                    totalPages={paginationDemandes.totalPages}
+                />
+
             </div>
 
 
@@ -1267,4 +1277,3 @@ function Demandes() {
 
 
 export default Demandes;
-

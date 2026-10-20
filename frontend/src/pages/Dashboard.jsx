@@ -159,10 +159,6 @@ function Dashboard() {
 
                                 </div>
 
-                                <div className="fs-1">
-                                    👥
-                                </div>
-
                             </div>
 
                         </div>
@@ -192,10 +188,6 @@ function Dashboard() {
                                         {demandes.length}
                                     </h2>
 
-                                </div>
-
-                                <div className="fs-1">
-                                    📋
                                 </div>
 
                             </div>
@@ -229,10 +221,6 @@ function Dashboard() {
 
                                 </div>
 
-                                <div className="fs-1">
-                                    ⏳
-                                </div>
-
                             </div>
 
                         </div>
@@ -262,10 +250,6 @@ function Dashboard() {
                                         {demandesApprouvees}
                                     </h2>
 
-                                </div>
-
-                                <div className="fs-1">
-                                    ✅
                                 </div>
 
                             </div>
@@ -409,7 +393,7 @@ function Dashboard() {
                             <div className="d-flex justify-content-between mb-3">
 
                                 <span>
-                                    ⏳ En attente
+                                    En attente
                                 </span>
 
                                 <span className="badge bg-warning">
@@ -422,7 +406,7 @@ function Dashboard() {
                             <div className="d-flex justify-content-between mb-3">
 
                                 <span>
-                                    ✅ Approuvées
+                                    Approuvées
                                 </span>
 
                                 <span className="badge bg-success">
@@ -435,7 +419,7 @@ function Dashboard() {
                             <div className="d-flex justify-content-between">
 
                                 <span>
-                                    ❌ Refusées
+                                    Refusées
                                 </span>
 
                                 <span className="badge bg-danger">

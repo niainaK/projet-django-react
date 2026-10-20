@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 
 import api from "../services/api";
 import Layout from "../components/Layout";
+import Pagination from "../components/Pagination";
+import usePagination from "../hooks/usePagination";
 
 
 function Employes() {
@@ -455,6 +457,8 @@ function Employes() {
         }
     );
 
+    const paginationEmployes = usePagination(employesFiltres);
+
 
     // =========================
     // CHARGEMENT
@@ -853,11 +857,12 @@ function Employes() {
                                 className="form-control"
                                 placeholder="Matricule, nom, prénom ou email..."
                                 value={recherche}
-                                onChange={(e) =>
+                                onChange={(e) => {
+                                    paginationEmployes.setPage(1);
                                     setRecherche(
                                         e.target.value
-                                    )
-                                }
+                                    );
+                                }}
                             />
 
                         </div>
@@ -872,11 +877,12 @@ function Employes() {
                             <select
                                 className="form-select"
                                 value={filtreService}
-                                onChange={(e) =>
+                                onChange={(e) => {
+                                    paginationEmployes.setPage(1);
                                     setFiltreService(
                                         e.target.value
-                                    )
-                                }
+                                    );
+                                }}
                             >
 
                                 <option value="tous">
@@ -911,11 +917,12 @@ function Employes() {
                             <select
                                 className="form-select"
                                 value={filtreRole}
-                                onChange={(e) =>
+                                onChange={(e) => {
+                                    paginationEmployes.setPage(1);
                                     setFiltreRole(
                                         e.target.value
-                                    )
-                                }
+                                    );
+                                }}
                             >
 
                                 <option value="tous">
@@ -976,10 +983,6 @@ function Employes() {
 
                         <div className="text-center p-5">
 
-                            <div className="fs-1 mb-3">
-                                👥
-                            </div>
-
                             <h5>
                                 Aucun employé trouvé
                             </h5>
@@ -1025,7 +1028,7 @@ function Employes() {
 
                                 <tbody>
 
-                                    {employesFiltres.map(
+                                    {paginationEmployes.pageItems.map(
                                         employe => (
 
                                             <tr key={employe.id}>
@@ -1100,7 +1103,7 @@ function Employes() {
                                                             )
                                                         }
                                                     >
-                                                        ✏️
+                                                        Modifier
                                                     </button>
 
 
@@ -1112,7 +1115,7 @@ function Employes() {
                                                             )
                                                         }
                                                     >
-                                                        🗑️
+                                                        Supprimer
                                                     </button>
 
                                                 </td>
@@ -1131,6 +1134,14 @@ function Employes() {
                     )}
 
                 </div>
+
+                <Pagination
+                    currentPage={paginationEmployes.currentPage}
+                    onPageChange={paginationEmployes.setPage}
+                    pageSize={paginationEmployes.pageSize}
+                    totalItems={paginationEmployes.totalItems}
+                    totalPages={paginationEmployes.totalPages}
+                />
 
             </div>
 
