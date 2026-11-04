@@ -2,6 +2,8 @@ from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.db import transaction
+from django.db import transaction
+from .services import envoyer_demande_vers_n8n
 
 from .models import (
     TypeConge,
@@ -36,6 +38,17 @@ class SoldeCongeViewSet(viewsets.ModelViewSet):
 class DemandeCongeViewSet(viewsets.ModelViewSet):
     queryset = DemandeConge.objects.all()
     serializer_class = DemandeCongeSerializer
+    
+    def perform_create(self, serializer):
+        # Enregistrer la demande dans la base de données
+        demande = serializer.save()
+
+        # Envoyer les données à n8n après validation
+        # de la transaction en base de données
+        transaction.on_commit(
+            lambda: envoyer_demande_vers_n8n(demande)
+        )
+
 
     @action(detail=True, methods=['post'])
     @transaction.atomic
