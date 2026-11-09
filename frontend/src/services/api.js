@@ -8,6 +8,35 @@ const api = axios.create({
     },
 });
 
+export async function getAllPages(url) {
+    let response = await api.get(url);
+
+    if (Array.isArray(response.data)) {
+        return response;
+    }
+
+    if (!Array.isArray(response.data?.results)) {
+        throw new Error("La réponse paginée de l'API est invalide.");
+    }
+
+    const results = [...response.data.results];
+
+    while (response.data.next) {
+        response = await api.get(response.data.next);
+
+        if (!Array.isArray(response.data?.results)) {
+            throw new Error("La réponse paginée de l'API est invalide.");
+        }
+
+        results.push(...response.data.results);
+    }
+
+    return {
+        ...response,
+        data: results,
+    };
+}
+
 // Ajouter automatiquement le JWT à chaque requête
 api.interceptors.request.use(
     (config) => {

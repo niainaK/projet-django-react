@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import api from "../services/api";
+import { getAllPages } from "../services/api";
 import Layout from "../components/Layout";
 import Pagination from "../components/Pagination";
 import usePagination from "../hooks/usePagination";
@@ -32,8 +32,8 @@ function Soldes() {
 
             const [soldesResponse, employesResponse] =
                 await Promise.all([
-                    api.get("/soldes/"),
-                    api.get("/employes/")
+                    getAllPages("/soldes/"),
+                    getAllPages("/employes/")
                 ]);
 
             setSoldes(soldesResponse.data);

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import api from "../services/api";
+import api, { getAllPages } from "../services/api";
 import Layout from "../components/Layout";
 import Pagination from "../components/Pagination";
 import usePagination from "../hooks/usePagination";
@@ -40,7 +40,7 @@ function TypesConges() {
 
         try {
 
-            const response = await api.get("/types-conges/");
+            const response = await getAllPages("/types-conges/");
 
             setTypesConges(response.data);
 

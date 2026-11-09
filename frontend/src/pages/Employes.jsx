@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import api from "../services/api";
+import api, { getAllPages } from "../services/api";
 import Layout from "../components/Layout";
 import Pagination from "../components/Pagination";
 import usePagination from "../hooks/usePagination";
@@ -78,11 +78,11 @@ function Employes() {
                 servicesResponse
             ] = await Promise.all([
 
-                api.get("/employes/"),
+                getAllPages("/employes/"),
 
-                api.get("/roles/"),
+                getAllPages("/roles/"),
 
-                api.get("/services/")
+                getAllPages("/services/")
 
             ]);
 

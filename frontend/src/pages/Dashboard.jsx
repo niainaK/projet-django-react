@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import api from "../services/api";
+import { getAllPages } from "../services/api";
 import Layout from "../components/Layout";
 
 
@@ -26,8 +26,8 @@ function Dashboard() {
                     employesResponse,
                     demandesResponse
                 ] = await Promise.all([
-                    api.get("/employes/"),
-                    api.get("/demandes/")
+                    getAllPages("/employes/"),
+                    getAllPages("/demandes/")
                 ]);
 
 
